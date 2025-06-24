@@ -4,17 +4,28 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 # ユーザー情報
 class User(AbstractBaseUser):
+    mail = models.EmailField(unique=True)
+    manager_flag = models.BooleanField(default=False)  # Shop管理者かどうか
     job = models.CharField(max_length=100)
     birth_year = models.PositiveIntegerField()
+
+    USERNAME_FIELD = 'mail'
+    # REQUIRED_FIELDS = ['job', 'birth_year']  # 必要に応じて
+
+    def __str__(self):
+        return f"{self.mail} ({'管理者' if self.manager_flag else '一般'})"
 
 # サブスクリプションに関する情報
 # class Subscription(models.Model):
 #     user = models.OneToOneField(User, on_delete=models.SET_NULL, null=True, blank=True)
 #     start_date = models.DateField(auto_now_add=True, null=False, blank=False)
 #     end_date = models.DateField(null=False, blank=False)
-#
-#    class Meta:
-#        db_table = 'subscriptions'
+
+#     class Meta:
+#         db_table = 'subscriptions'
+
+#     def __str__(self):
+#         return f"{self.user} のサブスクリプション（{self.start_date}〜{self.end_date}）"
 
 # 店舗情報
 class Shop(models.Model):
@@ -26,6 +37,9 @@ class Shop(models.Model):
     class Meta:
         db_table = 'shops'
 
+    def __str__(self):
+        return f"{self.name}（{self.address}）"
+
 # 画像情報
 # class Image(models.Model):
 #     shop = models.ForeignKey(Shop, on_delete=models.CASCADE, null=False, blank=False)
@@ -33,6 +47,9 @@ class Shop(models.Model):
 
 #     class Meta:
 #         db_table = 'images'
+
+#     def __str__(self):
+#         return f"{self.shop.name} の画像"
 
 # お気に入り情報
 # class Favorite(models.Model):
@@ -43,12 +60,18 @@ class Shop(models.Model):
 #         db_table = 'favorites'
 #         unique_together = ('shop', 'user')
 
+#     def __str__(self):
+#         return f"{self.user} のお気に入り: {self.shop.name}"
+
 # 選択できるカテゴリー情報
 # class Category(models.Model):
 #     name = models.CharField(max_length=50, null=False, blank=False, unique=True)
 
 #     class Meta:
 #         db_table = 'categories'
+
+#     def __str__(self):
+#         return self.name
 
 # 店舗ごとのカテゴリー情報
 # class ShopCategory(models.Model):
@@ -58,6 +81,9 @@ class Shop(models.Model):
 #     class Meta:
 #         db_table = 'shop_categories'
 #         unique_together = ('shop', 'category')
+
+#     def __str__(self):
+#         return f"{self.shop.name} - {self.category.name}"
 
 # レビュー情報
 # RATING_CHOICES = [(i, '★' * i + '☆' * (5 - i)) for i in range(1, 6)]
@@ -70,10 +96,13 @@ class Shop(models.Model):
 #         blank=False
 #     )
 #     comment = models.TextField()
-#
+
 #     class Meta:
 #         db_table = 'reviews'
-#
+
+#     def __str__(self):
+#         return f"{self.shop.name} 評価: {self.rating} コメント: {self.comment[:15]}..."
+
 # 予約情報
 # class Reservation(models.Model):
 #     shop = models.ForeignKey(Shop, on_delete=models.CASCADE, null=False, blank=False)
@@ -83,3 +112,6 @@ class Shop(models.Model):
 
 #     class Meta:
 #         db_table = 'reservations'
+
+#     def __str__(self):
+#         return f"{self.shop.name} {self.date} {self.number_of_people}人 by {self.user}"
