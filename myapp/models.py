@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 # ユーザー情報
 class User(AbstractBaseUser):
@@ -59,20 +60,26 @@ class Shop(models.Model):
 #         unique_together = ('shop', 'category')
 
 # レビュー情報
+# RATING_CHOICES = [(i, '★' * i + '☆' * (5 - i)) for i in range(1, 6)]
 # class Review(models.Model):
 #     shop = models.ForeignKey(Shop, on_delete=models.CASCADE, null=False, blank=False)
-#     rating = models.IntegerField(null=False, blank=False)
+#     rating = models.IntegerField(
+#         choices=RATING_CHOICES,
+#         validators=[MinValueValidator(1), MaxValueValidator(5)],
+#         null=False,
+#         blank=False
+#     )
 #     comment = models.TextField()
-
+#
 #     class Meta:
 #         db_table = 'reviews'
-
+#
 # 予約情報
 # class Reservation(models.Model):
 #     shop = models.ForeignKey(Shop, on_delete=models.CASCADE, null=False, blank=False)
 #     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False)
 #     date = models.DateTimeField(null=False, blank=False)
-#     number_of_people = models.IntegerField(null=False, blank=False)
+#     number_of_people = models.PositiveIntegerField(null=False, blank=False)
 
 #     class Meta:
 #         db_table = 'reservations'
