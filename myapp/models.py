@@ -8,7 +8,7 @@ class User(AbstractBaseUser):
 
 # サブスクリプションに関する情報
 # class Subscription(models.Model):
-#     user = models.OneToOneField(User, on_delete=models.SET_NULL, null=True, blank=True, unique=True)
+#     user = models.OneToOneField(User, on_delete=models.SET_NULL, null=True, blank=True)
 #     start_date = models.DateField(auto_now_add=True, null=False, blank=False)
 #     end_date = models.DateField(null=False, blank=False)
 #
@@ -19,8 +19,8 @@ class User(AbstractBaseUser):
 class Shop(models.Model):
     name = models.CharField(max_length=100, null=False, blank=False)
     address = models.CharField(max_length=255, null=False, blank=False)
-    seats = models.IntegerField(null=False, blank=False)
-    manager = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False)
+    seat_count = models.PositiveIntegerField(null=False, blank=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False)
 
     class Meta:
         db_table = 'shops'
