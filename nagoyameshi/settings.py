@@ -80,7 +80,7 @@ DATABASES = {
     }
 }
 
-AUTH_USER_MODEL = "customauth.myapp_user"
+AUTH_USER_MODEL = "myapp.User"
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators

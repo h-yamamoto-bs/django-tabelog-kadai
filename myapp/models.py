@@ -18,14 +18,15 @@ class UserManager(BaseUserManager):
         user.is_superuser = True
         user.is_staff = True
         user.is_active = True
+        # user.birth_year = extra_fields['birth_year']
         user.save(using=self._db)
         return user
 
 class User(AbstractBaseUser):
     mail = models.EmailField(unique=True)
     manager_flag = models.BooleanField(default=False)  # Shop管理者かどうか
-    job = models.CharField(max_length=100)
-    birth_year = models.PositiveIntegerField()
+    job = models.CharField(max_length=100, null=True, blank=True)
+    birth_year = models.PositiveIntegerField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
@@ -43,6 +44,9 @@ class User(AbstractBaseUser):
 
     def has_module_perms(self, app_label):
         return self.is_superuser
+
+    class Meta:
+        db_table = 'auth_user'
 
 # サブスクリプションに関する情報
 # class Subscription(models.Model):
