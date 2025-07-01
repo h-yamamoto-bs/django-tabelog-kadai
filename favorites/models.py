@@ -1,0 +1,1 @@
+# favorites/models.py
