@@ -1,0 +1,1 @@
+# myapp/migrations/0002_alter_user_birth_year_alter_user_job.py から移動予定
