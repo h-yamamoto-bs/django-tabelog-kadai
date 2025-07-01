@@ -2,6 +2,8 @@
 
 from accounts.models import User
 from shops.models import Shop
+from django.db import models
+
 class Favorite(models.Model):
     shop = models.ForeignKey(Shop, on_delete=models.CASCADE, null=False, blank=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False)
